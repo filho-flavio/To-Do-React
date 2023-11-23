@@ -1,0 +1,17 @@
+.container {
+    max-width: 45%;
+    margin: auto;
+    overflow: auto;
+    min-height: 300px;
+    border: 1px solid #2b9b6c;
+    border-radius: 1em;
+    display: flex;
+    padding: 1em;
+    justify-content: center;
+}
+
+.box-container {
+    display: flex;
+    justify-content: center;
+    gap: 1em;
+}
