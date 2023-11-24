@@ -1,30 +1,31 @@
 import React, { useState } from "react";
-
-import { Input } from "./components/input";
-import { Button } from "./components/button"
-import Tasks from "./components/Tasks";
 import "./App.css";
+import { Card } from "./components/Card"
 
 const App = () => {
-  const [tasks, setTasks] = useState([
-    {
-      id: "1",
-      title: "Projeto de POO",
-      completed: false,
-    },
-    {
-      id: "2",
-      title: "Estudar HTML e CSS",
-      completed: true,
-    },
-  ]);
+  // task is a place where store the state and setTask is the method to set tasks
+  const [task, setTask] = useState([]);
+
+  function addTask() {
+    const tasks = {
+      text: task,
+    }
+
+    setTask(prevState => [...prevState, tasks])
+  }
 
   return (
     <>
       <div className="container">
-        <div className="box-container">
-          <Input />
-          <Button />
+        <div className="header">
+          <h1>To Do List</h1>
+        </div>
+        <div className="box-container line">
+          <input type="text" placeholder="Write your task" className="input" />
+          <button className="button" onClick={addTask}>Add Task</button>
+        </div>
+        <div className="box-content line">
+          {task.map((item) => <Card text={task.text} />)}
         </div>
       </div>
     </>
