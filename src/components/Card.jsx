@@ -5,7 +5,10 @@ export function Card(props) {
         <>
             <div className="card">
                 <p>{props.text}</p>
-                <img src="./img/cancelar.png" alt="" />
+                <div className="imgs">
+                    <img src={"edit.png"} alt="" />
+                    <img src={"x.png"} alt="" />
+                </div>
             </div>
         </>
     )
