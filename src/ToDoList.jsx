@@ -1,25 +1,38 @@
+// imports that must to be made
 import React, { useState } from "react";
 import "./ToDoList.css";
 import { Card } from "./components/Card"
 
-export function ToDoList () {
+// my ToDoList function to be exported to index.jsx
+export function ToDoList() {
   // task is a place where store the state and setTask is the method to set tasks
   const [tasks, setTask] = useState([]);
 
   function addTask() {
-    const inTask = document.querySelector("#inTask").value;
+    const inTask = document.querySelector("#inTask");
+    const task = inTask.value;
 
-    if (inTask === "") {
+    if (task === "") {
       alert("Please enter a task");
+      inTask.focus();
       return;
     }
 
     const newTask = {
-      text: inTask,
+      id: 0,
+      text: task,
     }
 
     setTask(prevState => [...prevState, newTask]);
     document.querySelector("#inTask").value = "";
+  }
+
+  function editTask() {
+    console.log("Bt clicked");
+  }
+
+  function deleteTask() {
+    console.log("Bt Delete clicked");
   }
 
   return (
@@ -33,7 +46,14 @@ export function ToDoList () {
           <button className="button" onClick={addTask}>Add Task</button>
         </div>
         <div className="box-content">
-          {tasks.map((item) => <Card text={item.text} />)}
+          {tasks.map((item, index) =>
+            <Card
+              id={index++}
+              text={item.text}
+              editTask={editTask}
+              deleteTask={deleteTask}
+            />
+          )}
         </div>
       </div>
     </>
