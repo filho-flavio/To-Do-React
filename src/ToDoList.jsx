@@ -4,6 +4,7 @@ import "./ToDoList.css";
 import { Card } from "./components/Card"
 import { v4 as uuidv4 } from 'uuid'
 
+
 // my ToDoList function to be exported to index.jsx
 export function ToDoList() {
   // task is a place where store the state and setTask is the method to set tasks
@@ -29,21 +30,41 @@ export function ToDoList() {
     document.querySelector("#inTask").value = "";
   }
 
+  // Function for edit tasks
   const editTask = (taskId) => {
     const modal = document.querySelector("#modal");
     const closeModal = document.querySelector("#close-modal");
-    const btEdit = document.querySelectorAll(".btEdit");
+    const inTaskEdit = document.querySelector("#inTextEdit");
 
-    Array.from(btEdit).forEach(edit => {
-      edit.addEventListener("click", () => modal.style.display = "inline")
-    })
+    const task = tasks.find(task => task.id === taskId);
+
+    if (task) {
+      inTaskEdit.value = task.text;
+      modal.style.display = "inline";
+    } else {
+      console.error(`Tasks with ID ${taskId} not found.`)
+    }
 
     closeModal.addEventListener("click", () => {
       modal.style.display = "none";
     })
-    const inTaskEdit = document.querySelector("#inTextEdit");
-    const task = tasks.find(task => task.id === taskId);
-    inTaskEdit.value = task.text;
+
+    const btSave = document.querySelector("#btSave");
+    btSave.addEventListener("click", () => saveEditedTask(taskId));
+  }
+
+  function saveEditedTask(taskId) {
+    const newText = document.querySelector("#inTextEdit").value;
+
+    const updatedTasks = tasks.map((task) =>
+      task.id === taskId ? { ...task, text: newText } : task
+    );
+
+    setTask(updatedTasks);
+
+    console.log(newText);
+
+    document.querySelector("#modal").style.display = "none";
   }
 
   function handleTask(taskId) {
@@ -57,9 +78,11 @@ export function ToDoList() {
     // setTask(newTasks);
   }
 
-  function deleteTask() {
+  function deleteTask(taskId) {
     if (window.confirm("Are you sure to delete this task: ")) {
-      console.log("Task deleted")
+      const updatedTasks = tasks.filter((task) => task.id !== taskId);
+
+      setTask(updatedTasks);
     };
   }
 
@@ -80,12 +103,13 @@ export function ToDoList() {
               <img src={"x-white.png"} alt="" id="close-modal" onClick={editTask} />
             </div>
             <input type="text" id="inTextEdit" />
-            <button className="button">Save</button>
+            <button className="button" id="btSave">Save</button>
           </div>
         </div>
         <div className="box-content">
           {tasks.map((item) =>
             <Card
+              key={item.id}
               id={item.id}
               text={item.text}
               completed={item.completed}
